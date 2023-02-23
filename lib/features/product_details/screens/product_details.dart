@@ -3,6 +3,7 @@ import "package:athleticarsenal/common/widgets/custom_search_appbar.dart";
 import "package:athleticarsenal/common/widgets/custom_textfield.dart";
 import "package:athleticarsenal/common/widgets/stars.dart";
 import "package:athleticarsenal/constants/global_Variables.dart";
+import "package:athleticarsenal/features/cart/services/cart_services.dart";
 import "package:athleticarsenal/features/product_details/services/product_detail_services.dart";
 import "package:athleticarsenal/models/product.dart";
 import "package:athleticarsenal/providers/user_provider.dart";
@@ -22,6 +23,7 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   final productDetailServices = ProductDetailServices();
+  final cartServices = CartServices();
   final _reviewFormKey = GlobalKey<FormState>(); //key for form
   final TextEditingController _reviewController = TextEditingController();
   double myRating = 3;
@@ -60,6 +62,10 @@ class _ProductDetailsState extends State<ProductDetails> {
   void dispose() {
     super.dispose();
     _reviewController.dispose();
+  }
+
+  void addToCart() {
+    cartServices.addToCart(context: context, product: widget.product);
   }
 
   @override
@@ -170,7 +176,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               padding: EdgeInsets.all(10),
               child: CustomButton(
                 title: "Add to Cart",
-                onPressed: () {},
+                onPressed: addToCart,
                 color: Color.fromRGBO(254, 216, 19, 1),
               ),
             ),

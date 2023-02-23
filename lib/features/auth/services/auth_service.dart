@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:athleticarsenal/constants/error_handling.dart';
 import 'package:athleticarsenal/constants/global_Variables.dart';
 import 'package:athleticarsenal/constants/utils.dart';
-// import 'package:athleticarsenal/home/screens/home_screen.dart';
 import 'package:athleticarsenal/models/user.dart';
 import "package:http/http.dart" as http;
 import 'package:athleticarsenal/providers/user_provider.dart';
@@ -30,8 +29,9 @@ class AuthService {
         address: '',
         type: '',
         token: '',
+        cart: [],
       );
-      http.Response res = await http.post(Uri.parse('$uri/api/user/signup'),
+      http.Response res = await http.post(Uri.parse('$uri/api/auth/signup'),
           body: user.toJson(),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
@@ -64,9 +64,10 @@ class AuthService {
         address: '',
         type: '',
         token: '',
+        cart: [],
       );
 
-      http.Response res = await http.post(Uri.parse('$uri/api/user/signin'),
+      http.Response res = await http.post(Uri.parse('$uri/api/auth/signin'),
           body: user.toJson(),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
@@ -119,7 +120,7 @@ class AuthService {
       }
 
       http.Response tokenRes = await http.post(
-          Uri.parse('$uri/api/user/tokenisvalid'),
+          Uri.parse('$uri/api/auth/tokenisvalid'),
           headers: <String, String>{
             'Content-Type': 'application/json, charset=UTF-8',
             'authToken': token!
@@ -129,7 +130,7 @@ class AuthService {
 
       if (response == true) {
         http.Response userRes = await http
-            .get(Uri.parse('$uri/api/user/getuser'), headers: <String, String>{
+            .get(Uri.parse('$uri/api/auth/getuser'), headers: <String, String>{
           'Content-Type': 'application/json, charset=UTF-8',
           'authToken': token
         });

@@ -1,8 +1,11 @@
 import 'package:athleticarsenal/constants/global_Variables.dart';
 import 'package:athleticarsenal/features/account/screens/account_screen.dart';
+import 'package:athleticarsenal/features/cart/screens/cart_screen.dart';
 import 'package:athleticarsenal/features/home/screens/home_screen.dart';
+import 'package:athleticarsenal/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart' as badges; //from package
+import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart'; //from package
 
 class BottomBar extends StatefulWidget {
   static const String routeName = '/bottomBar';
@@ -25,13 +28,13 @@ class _BottomBarState extends State<BottomBar> {
   List<Widget> pages = [
     HomeScreen(),
     AccountScreen(),
-    Center(
-      child: Text("Cart"),
-    ),
+    CartScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    //short syntax of provider
+    final userCartLen = context.watch<UserProvider>().user.cart.length;
     return Scaffold(
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
@@ -80,26 +83,33 @@ class _BottomBarState extends State<BottomBar> {
               )),
           //Cart
           BottomNavigationBarItem(
-              label: '', //required field
-              icon: Container(
-                width: bottomBarWidth,
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                        color: _page == 2
-                            ? GlobalVariables.selectedNavBarColor
-                            : GlobalVariables.backgroundColor,
-                        width: bottomBarBorderWidth),
+            label: '', //required field
+            icon: Container(
+              width: bottomBarWidth,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                      color: _page == 2
+                          ? GlobalVariables.selectedNavBarColor
+                          : GlobalVariables.backgroundColor,
+                      width: bottomBarBorderWidth),
+                ),
+              ),
+              child: badges.Badge(
+                badgeContent: Text(
+                  userCartLen.toString(),
+                  style: TextStyle(
+                    color: GlobalVariables.primaryColor,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: badges.Badge(
-                  badgeContent: Text("0"),
-                  badgeStyle: badges.BadgeStyle(badgeColor: Colors.white),
-                  child: Icon(
-                    Icons.shopping_cart_outlined,
-                  ),
+                badgeStyle: badges.BadgeStyle(badgeColor: Colors.white),
+                child: Icon(
+                  Icons.shopping_cart_outlined,
                 ),
-              ))
+              ),
+            ),
+          )
         ],
       ),
     );
